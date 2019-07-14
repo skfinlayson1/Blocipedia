@@ -1,0 +1,19 @@
+{
+  "name": "blocipedia",
+  "version": "1.0.0",
+  "description": "A wikipedia like app for informational purposes",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "set NODE_ENV=test&& jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skfinlayson1/Blocipedia.git"
+  },
+  "author": "Shane Finlayson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skfinlayson1/Blocipedia/issues"
+  },
+  "homepage": "https://github.com/skfinlayson1/Blocipedia#readme"
+}
