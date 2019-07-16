@@ -2,7 +2,6 @@ require("dotenv").config();
 const path = require("path");
 const bodyParser = require("body-parser");
 const flash = require("express-flash");
-const morgan = require("morgan");
 
 const viewsFilePath = path.join(__dirname, "..", "views");
 const assetsFilePath = path.join(__dirname, "..", "assets");
@@ -16,7 +15,6 @@ module.exports = {
         app.use(bodyParser.urlencoded({extended: true}));
         app.use(express.static(assetsFilePath));
         app.use(flash());
-        app.use(morgan('dev'));
 
     }
 

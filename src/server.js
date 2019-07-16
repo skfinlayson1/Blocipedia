@@ -13,9 +13,9 @@ function normalizePort(port) {
         return port;
     } else if (parsedPort >= 0) {
         return parsedPort;
+    } else {
+        return false;
     }
-
-    return false;
 };
 
 server.listen(port);
