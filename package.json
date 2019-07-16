@@ -4,7 +4,8 @@
   "description": "A wikipedia like app for informational purposes",
   "main": "src/server.js",
   "scripts": {
-    "test": "set NODE_ENV=test&& jasmine"
+    "test": "set NODE_ENV=test&& jasmine",
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,19 @@
   "bugs": {
     "url": "https://github.com/skfinlayson1/Blocipedia/issues"
   },
-  "homepage": "https://github.com/skfinlayson1/Blocipedia#readme"
+  "homepage": "https://github.com/skfinlayson1/Blocipedia#readme",
+  "devDependencies": {
+    "jasmine": "^3.4.0",
+    "morgan": "^1.9.1",
+    "request": "^2.88.0"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "express-flash": "0.0.2",
+    "pg": "^7.11.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.10.0"
+  }
 }
