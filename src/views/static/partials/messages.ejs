@@ -1,0 +1,14 @@
+<% if(messages.error) { %>
+    Validation Errors:
+
+    <ul>
+
+    <% if(messages.error) { %>
+        <% messages.error[0].errors.forEach((err) => { %>
+            <li><p><%= err.message %></p></li>
+        <% }) %>
+    <% } %>   
+
+    </ul>
+    
+<% } %>

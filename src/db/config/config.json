@@ -1,19 +1,17 @@
 {
   "development": {
-    "username": "root",
+    "username": "postgres",
     "password": null,
     "database": "blocipedia-dev",
     "host": "127.0.0.1",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "test": {
-    "username": "root",
+    "username": "postgres",
     "password": null,
     "database": "blocipedia-test",
     "host": "127.0.0.1",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "production": {
     "username": "root",
@@ -21,7 +19,7 @@
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "operatorsAliases": false,
-    "db": "https://git.heroku.com/skfinlayson1-blocipedia.git"
+    "db": "postgres://vtldzylnrvryke:a638a043ebb9d9e5aef10a9e974ae9424c8342e83388baa82685fedd8a94983e@ec2-174-129-209-212.compute-1.amazonaws.com:5432/dav5jdt826j8i8",
+    "use_env_variable": "DATABASE_URL"
   }
 }
