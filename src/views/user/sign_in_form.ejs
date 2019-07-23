@@ -1,49 +1,37 @@
 <!DOCTYPE html>
 <html>
+<!--head-->
     <head>
-
+        <title>Blocipedia</title>
     </head>
+<!--main-->
     <main>
-
+<!--header-->
         <header>
+            <% include ../static/partials/navbar.ejs %>
             <% include ../static/partials/header.ejs %>
             <% include ../static/partials/messages.ejs %>
         </header>
-
+<!--body-->
         <body>
 
-            <form action="/users/sign_up/create" method="post">
-
-                <div class="sign-in-form">
-                    <label for="userName">Username</label>
-                    <input type="text" name="userName" placeholder="Enter Username">
-                    <small>Please enter a username that's atleast three characters long.</small>
+            <form action="/users/sign_in/login" method="POST">
+                
+                <div>
+                    <label for="username">Username</label>
+                    <input type="test" name="username" placeholder="Enter Username">
                 </div>
 
-                <div class="sign-in-form">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" placeholder="Enter email">
-                    <small>Please enter a valid email.</small>
-                </div>
-
-                <div class="sign-in-form">
+                <div>
                     <label for="password">Password</label>
-                    <input type="password" name="password" placeholder="Enter Password">
-                    <small>Please enter a password atleast five characters long.</small>
+                    <input type="test" name="password" placeholder="Enter Password">
                 </div>
 
-                <div class="sign-in-form">
-                    <label for="passwordConfirmation">Password Confirmation</label>
-                    <input type="password" name="passwordConfirmation" placeholder="Confirm Password">
-                    <small>Confirm password.</small>
-                </div>
-
-                <button type="submit">Submit</button>
+                <button type="submit">Sign In</button>
 
             </form>
-
         </body>
-
+<!--footer-->
         <footer>
 
         </footer>

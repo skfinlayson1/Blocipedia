@@ -1,4 +1,6 @@
 const sgMail = require('@sendgrid/mail');
+const passport = require("passport");
+
 const userQueries = require("../db/queries.users");
 
 module.exports = {
@@ -10,12 +12,12 @@ module.exports = {
 
     // Create new User
     signUp(req, res, next) {
-        res.render("user/sign_in_form");
+        res.render("user/sign_up_form");
     },
 
     create(req, res, next) {
         const values = {
-            userName: req.body.userName,
+            username: req.body.username,
             email: req.body.email,
             password: req.body.password
         };
@@ -36,18 +38,33 @@ module.exports = {
                 };
                 sgMail.send(msg);
 
-                res.redirect(302, "/");
+                passport.authenticate("local")(req, res, () => {
+                    req.flash("notice", "Sign in successful");
+                    res.redirect("/");
+                });
+
             }
         })
     },
 
     // Login existing User
     signIn(req, res, next) {
-
+        res.render("user/sign_in_form")
     },
 
     login(req, res, next) {
-
+        passport.authenticate("local", {
+            failureRedirect: "/users/sign_in",
+            failureFlash: true
+            })(req, res, function () {
+                if(!req.user) {
+                    req.flash("error", "Sign in failed");
+                    res.redirect("/users/sign_in");
+                } else {
+                    req.flash("notice", "Sign in successful");
+                    res.redirect("/");
+                }
+            })
     },
 
     // Edit existing User
@@ -60,8 +77,10 @@ module.exports = {
     },
 
     // Delete existing User
-    destroy(req, res, next) {
-
+    signOut(req, res, next) {
+        req.logout();
+        req.flash("notice", "You've successfully signed out!");
+        res.redirect("/");
     }
 
 }

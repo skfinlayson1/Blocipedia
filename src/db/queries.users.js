@@ -13,7 +13,7 @@ module.exports = {
         const hashedPassword = bcrypt.hashSync(values.password, salt);
 
         User.create({
-            userName: values.userName,
+            username: values.username,
             email: values.email,
             password: hashedPassword
         })

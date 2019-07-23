@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <main>
+
+        <header>
+            <% include ../static/partials/navbar.ejs %>
+            <% include ../static/partials/header.ejs %>
+            <% include ../static/partials/messages.ejs %>
+        </header>
+
+        <body>
+
+            <form action="/users/sign_up/create" method="post">
+
+                <div class="sign-in-form">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" placeholder="Enter Username">
+                    <small>Please enter a username that's atleast three characters long.</small>
+                </div>
+
+                <div class="sign-in-form">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" placeholder="Enter email">
+                    <small>Please enter a valid email.</small>
+                </div>
+
+                <div class="sign-in-form">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" placeholder="Enter Password">
+                    <small>Please enter a password atleast five characters long.</small>
+                </div>
+
+                <div class="sign-in-form">
+                    <label for="passwordConfirmation">Password Confirmation</label>
+                    <input type="password" name="passwordConfirmation" placeholder="Confirm Password">
+                    <small>Confirm password.</small>
+                </div>
+
+                <button type="submit">Submit</button>
+
+            </form>
+
+        </body>
+
+        <footer>
+
+        </footer>
+
+    </main>
+</html>

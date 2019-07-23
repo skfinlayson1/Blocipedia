@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const validator = require("express-validator");
 const flash = require("express-flash");
 const session = require("express-session");
-//const morgan = require("morgan");
+const passportConfig = require("./passport-config");
+const helper = require("../authorizer/helpers");
 
 const viewsFilePath = path.join(__dirname, "..", "views");
 const assetsFilePath = path.join(__dirname, "..", "assets");
@@ -26,7 +27,14 @@ module.exports = {
             cookie: { maxAge: 1.21e+9 }
         }))
         app.use(flash());
-        //app.use(morgan("dev"));
+
+        passportConfig.init(app);
+        //helper.morgan(app);
+
+        app.use((req, res, next) => {
+            res.locals.currentUser = req.user;
+            next();
+          })
 
     }
 
