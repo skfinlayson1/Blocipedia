@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <main>
+
+<!--header-->
+        <header>
+            <% include ../static/partials/navbar.ejs %>
+            <% include ../static/partials/header.ejs %>
+            <% include ../static/partials/messages.ejs %>
+        </header>
+
+<!--body-->
+        <body>
+
+            <h2>Check out what's new!</h2>
+
+            <a href="/wikis/new">Or make something new!</a>
+
+            <% if (wikis.length > 0) { %>
+                <% wikis.forEach((wiki) => { %>
+                    <div style="background-color:grey">
+                        <h3><%= wiki.title %></h3>
+                        <a href="/wikis/<%= wiki.id %>">see more...</a> 
+                    </div>
+
+                <% }) %>
+            <% } else { %>
+                <h3>Create an entry <a href="/wikis/new">HERE</a></h3>
+            <% } %>
+        </body>
+
+<!--footer-->
+        <footer>
+
+        </footer>
+
+    </main>
+
+</html>

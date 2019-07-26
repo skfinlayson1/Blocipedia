@@ -3,7 +3,9 @@
 
     <ul>
 
-    <% if (typeof(messages.error[0]) !== "string") { %>
+        <% console.log(messages.error) %>
+
+    <% if (messages.error[0].errors !== undefined) { %>
 
         <% messages.error[0].errors.forEach((err) => { %>
             <li><p><%= err.message %></p></li>

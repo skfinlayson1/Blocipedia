@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <main>
+
+<!--header-->
+        <header>
+            <% include ../static/partials/navbar.ejs %>
+            <% include ../static/partials/header.ejs %>
+            <% include ../static/partials/messages.ejs %>
+        </header>
+
+<!--body-->
+        <body>
+            <% if (wiki.title) { %>
+
+                <div>
+                    <h2><%= wiki.title %></h2>
+                    <p><%= wiki.body %></p>
+                    <small>By: <%= user.username %></small>  
+                </div>
+
+                <div>
+                    <a href="/wikis/<%= wiki.id %>/edit">Edit</a>
+                    <a href="/wikis/<%= wiki.id %>/destroy">Delete</a>
+                </div>
+       
+            <% } else { %>
+                <h3>Uhh ohh.... Not sure how that happened! We can't find this wiki...... Anywhere!</h3>
+            <% } %>
+
+        </body>
+
+<!--footer-->
+        <footer>
+
+        </footer>
+
+    </main>
+
+</html>

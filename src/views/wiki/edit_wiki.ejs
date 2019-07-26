@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <main>
+
+<!--header-->
+        <header>
+            <% include ../static/partials/navbar.ejs %>
+            <% include ../static/partials/header.ejs %>
+            <% include ../static/partials/messages.ejs %>
+        </header>
+<!--body-->
+        <body>
+
+            <h3>Edit wiki</h3>
+
+            <form action="/wikis/<%= wiki.id %>/update" method="POST">
+
+                <div>
+                    <label for="title">Wiki Title</label>
+                    <input type="text" name="title" value="<%= wiki.title %>">
+                    <small>A title for your new entry</small>
+                </div>
+
+                <div>
+                    <label for="body">Story</label>
+                    <input type="text" name="body" value="<%= wiki.body %>">
+                    <small>Enter the content for your wiki</small>
+                </div>
+
+                <div>
+                    <label for="private">Private</label>
+                    <input type="checkbox" name="private">
+                    <small>Make it so only you can see the contents of this post</small>
+                </div>
+
+                <button type="submit">Update</button>
+
+            </form>
+        </body>
+
+<!--footer-->
+        <footer>
+
+        </footer>
+
+    </main>
+
+</html>
