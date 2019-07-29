@@ -25,6 +25,22 @@ module.exports = {
         })
     },
 
+    makeAdmin(id, callback) {
+        User.findByPk(id)
+        .then((user) => {
+            user.update({role: "admin"})
+            .then((res) => {
+                callback(null, res);
+            })
+            .catch((err) => {
+                callback(err);
+            });
+        })
+        .catch((err) => {
+            callback(err);
+        })
+    }
+
     
 
 }

@@ -1,4 +1,5 @@
 const wikiQueries = require("../db/queries.wikis");
+const Authorizer = require("../policies/wiki");
 
 module.exports = {
 
@@ -27,12 +28,23 @@ module.exports = {
     },
 
     new(req, res, next) {
-        res.render("wiki/new_wiki");
+
+        const authorized = new Authorizer(req.user);
+
+        if (authorized.newAndCreate()) {
+            res.render("wiki/new_wiki");
+        } else {
+            req.flash("error", "Please create an account or sign in");
+            res.redirect("/users/sign_up");
+        }
+        
     },
 
     create(req, res, next) {
 
-        if(req.user) {
+        const authorized = new Authorizer(req.user);
+
+        if (authorized.newAndCreate()) {
             const values = {
                 title: req.body.title,
                 body: req.body.body,
@@ -50,7 +62,7 @@ module.exports = {
             })
         } else {
             req.flash("error", "Please sign in to do that!")
-            res.redirect("/users/sign_in");
+            res.redirect("/users/sign_up");
         }
     },
 
@@ -61,14 +73,22 @@ module.exports = {
                 req.flash("error", "Wiki couldn't be found!")
                 res.redirect("/wikis");
             } else {
-                res.render(`wiki/edit_wiki`, {...wiki})
+
+                const authorized = new Authorizer(req.user, wiki);
+                
+                if (authorized.editAndUpdate()) {
+                    res.render(`wiki/edit_wiki`, {...wiki})
+                } else {
+                    req.flash("error", "You're not aloud to do that.")
+                    res.redirect("/users/sign_up");
+                }
+                
             }
         })
     },
 
     update(req, res, next) {
 
-        if(req.user) {
             const newValues = {
                 title: req.body.title,
                 body: req.body.body,
@@ -76,29 +96,55 @@ module.exports = {
                 private: req.body.private || false
             };
 
-            wikiQueries.update(newValues, req.params.id, (err, response) => {
-                if (err) {
-                    req.flash("error", "Something went wrong");
-                    res.redirect(`/wikis/${req.params.id}/edit`);
-                } else {
+            wikiQueries.show(req.params.id, (err, wiki) => {
+                if (err || !wiki) {
+                    req.flash('error', "Couldn't find wiki entry.");
                     res.redirect(`/wikis/${req.params.id}`);
+                } else {
+
+                    const Authorized = new Authorizer(req.user, wiki);
+
+                    wikiQueries.update(newValues, req.params.id, (err, response) => {
+                        if (err) {
+                            req.flash("error", "Something went wrong");
+                            res.redirect(`/wikis/${req.params.id}/edit`);
+                        } else {
+                            res.redirect(`/wikis/${req.params.id}`);
+                        };
+                    })
                 }
             })
-        } else {
-            req.flash("error", "Please sign in to do that!")
-            res.redirect("/users/sign_in");
-        }
+
+      
+
     },
 
     destroy(req, res, next) {
-        wikiQueries.destroy(req.params.id, (err, response) => {
-            if (err) {
-                req.flash("error", err);
+
+        wikiQueries.show(req.params.id, (err, wiki) => {
+            if (err || !wiki) {
+                req.flash('error', "Couldn't find wiki entry.");
                 res.redirect(`/wikis/${req.params.id}`);
             } else {
-                res.redirect(`/wikis`);
+
+                const Authorized = new Authorizer(req.user, wiki);
+
+                if (Authorized.editAndUpdate()) {
+                    wikiQueries.destroy(req.params.id, (err, response) => {
+                        if (err) {
+                            req.flash("error", err);
+                            res.redirect(`/wikis/${req.params.id}`);
+                        } else {
+                            res.redirect(`/wikis`);
+                        }
+                    })
+                } else {
+                    req.flash("error", "You're not aloud to do that.");
+                    res.redirect("/wikis");
+                }
             }
         })
+
     }
 
 }

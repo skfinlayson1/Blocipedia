@@ -81,6 +81,18 @@ module.exports = {
         req.logout();
         req.flash("notice", "You've successfully signed out!");
         res.redirect("/");
+    },
+
+    makeAdmin(req, res, next) {
+        userQueries.makeAdmin(req.params.id, (err, response) => {
+            if (err) {
+                req.flash("error", "something went wrong!");
+                res.redirect("/");
+            } else {
+                req.flash("error", "You are now an admin!")
+                res.redirect("/");
+            }
+        })
     }
 
 }

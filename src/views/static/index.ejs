@@ -19,7 +19,12 @@
         <!-- BODY ------------------------------------------------------------ -->
         <body>
             <% include ./partials/messages %>
-            <a href="/wikis">Articles</a>
+            <a href="/wikis">Articles</a><br> <!--fix this br-->
+            
+            <% if (currentUser) { %>
+                <a href="/users/<%= currentUser.id %>/admin">Make me an Admin!</a>
+            <% } %>
+
         </body>
         
         <!-- FOOTER ---------------------------------------------------------- -->
