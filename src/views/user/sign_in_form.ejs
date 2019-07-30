@@ -4,16 +4,16 @@
     <head>
         <title>Blocipedia</title>
     </head>
-<!--main-->
-    <main>
+
+    <body>
 <!--header-->
         <header>
             <% include ../static/partials/navbar.ejs %>
             <% include ../static/partials/header.ejs %>
             <% include ../static/partials/messages.ejs %>
         </header>
-<!--body-->
-        <body>
+<!--main-->
+        <main>
 
             <form action="/users/sign_in/login" method="POST">
                 
@@ -30,11 +30,11 @@
                 <button type="submit">Sign In</button>
 
             </form>
-        </body>
+        </main>
 <!--footer-->
         <footer>
 
         </footer>
 
-    </main>
+    </body>
 </html>

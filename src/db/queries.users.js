@@ -25,10 +25,10 @@ module.exports = {
         })
     },
 
-    makeAdmin(id, callback) {
+    changeRole(id, role, callback) {
         User.findByPk(id)
         .then((user) => {
-            user.update({role: "admin"})
+            user.update({role: role})
             .then((res) => {
                 callback(null, res);
             })

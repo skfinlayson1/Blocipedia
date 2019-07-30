@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>Stripe Checkout Integration</title>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+  </head>
+  <body>
+      <header>
+          <% include ../static/partials/navbar.ejs %>
+          <% include ../static/partials/header.ejs %>
+          <% include ../static/partials/messages.ejs %>
+      </header>
+    <h2>Become a Pro member for only $15!</h2>
+
+    <div id="shop">
+      <button id="buttonCheckout">Checkout</button>
+    </div>
+    <small>Test card number is <bold>4242 4242 4242 4242</bold></small>
+  </body>
+
+  <script>
+
+    var checkoutHandler = StripeCheckout.configure({
+        key: "pk_test_iNKfy80QtWc6frBiXRogh5U700VUN2yk4q",
+        locale: "auto"
+    });
+
+    var button = document.getElementById("buttonCheckout");
+
+    button.addEventListener("click", function(ev) {
+        checkoutHandler.open({
+            name: "Blocipedia",
+            description: "Pro charge",
+            token: handleToken,
+        });
+    });
+
+    function handleToken(token) {
+        fetch("/users/<%= currentUser.id %>/pro/charge", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(token)
+        })
+        .then(output => {
+            if (output.status === "succeeded") {
+                document.getElementById("shop").innerHTML = "<p>Purchase complete!</p>";
+                window.location.replace(output.url);
+            }
+        })
+    }
+
+  </script>
+</html>

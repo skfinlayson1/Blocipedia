@@ -8,7 +8,7 @@
             
             <link rel="stylesheet" href="/css/application.css">
     </head>
-    <main>
+    <body>
 
         <!-- HEADER ---------------------------------------------------------- -->
         <header>
@@ -16,20 +16,21 @@
             <% include ./partials/header %>
         </header>
 
-        <!-- BODY ------------------------------------------------------------ -->
-        <body>
+        <!-- MAIN ------------------------------------------------------------ -->
+        <main>
             <% include ./partials/messages %>
             <a href="/wikis">Articles</a><br> <!--fix this br-->
             
             <% if (currentUser) { %>
-                <a href="/users/<%= currentUser.id %>/admin">Make me an Admin!</a>
+                <a href="/users/<%= currentUser.id %>/admin">Make me an Admin!</a><br> <!--fix this br-->
+                <a href="/users/<%= currentUser.id %>/pro">Make me a Pro user</a>
             <% } %>
 
-        </body>
+        </main>
         
         <!-- FOOTER ---------------------------------------------------------- -->
         <footer>
 
         </footer>
-    </main>
+    </body>
 </html>

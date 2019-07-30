@@ -84,7 +84,7 @@ module.exports = {
     },
 
     makeAdmin(req, res, next) {
-        userQueries.makeAdmin(req.params.id, (err, response) => {
+        userQueries.changeRole(req.params.id, 'admin', (err, response) => {
             if (err) {
                 req.flash("error", "something went wrong!");
                 res.redirect("/");
