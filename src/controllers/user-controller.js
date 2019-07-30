@@ -89,7 +89,7 @@ module.exports = {
                 req.flash("error", "something went wrong!");
                 res.redirect("/");
             } else {
-                req.flash("error", "You are now an admin!")
+                req.flash("notice", "You are now an admin!")
                 res.redirect("/");
             }
         })

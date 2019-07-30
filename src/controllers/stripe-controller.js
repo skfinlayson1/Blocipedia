@@ -41,7 +41,7 @@ module.exports = {
                         req.flash("error", "Something went wrong!");
                         res.redirect(307, "/");
                     } else {
-                        req.flash("error", "You are now a Pro member");
+                        req.flash("notice", "You are now a Pro member");
                         res.redirect(307, "/");
                     }
                 })
@@ -54,5 +54,17 @@ module.exports = {
         })
 
     },
+
+    makeMember(req, res, next) {
+        userQueries.changeRole(req.params.id, "member", (err, response) => {
+            if (err) {
+                req.flash("error", "Something went wrong");
+                res.redirect("/");
+            } else {
+                req.flash("notice", "You are now a member");
+                res.redirect("/");
+            }
+        })
+    }
 
 }

@@ -1,9 +1,7 @@
 <% if(messages.error) { %>
-    <h3>Validation Errors:</h3>
+    <h3>Oh no... Something has gone wrong!</h3>
 
     <ul>
-
-        <% console.log(messages.error) %>
 
     <% if (messages.error[0].errors !== undefined) { %>
 
@@ -19,4 +17,22 @@
 
     </ul>
     
+<% } else if (messages.notice) { %>
+    <h3>Notice!</h3>
+
+    <ul>
+
+    <% if (messages.notice[0].notices !== undefined) { %>
+
+        <% messages.notice[0].notices.forEach((err) => { %>
+            <li><p><%= err.message %></p></li>
+        <% }) %>
+
+    <% } else if (typeof(messages.notice[0]) === "string") {  %>
+        <% for (let i = 0; i < messages.notice.length; i ++) { %>
+            <li><p><%= messages.notice[i] %></p></li>
+        <% } %>
+    <% } %> 
+
+    </ul>
 <% } %>
