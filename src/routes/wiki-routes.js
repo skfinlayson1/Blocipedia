@@ -15,4 +15,4 @@ router.post("/wikis/:id/update", wikiController.update);
 
 router.get("/wikis/:id/destroy", wikiController.destroy);
 
-module.exports = router;
+module.exports = router; 

@@ -1,30 +1,39 @@
+const markdown = require("markdown").markdown;
+
 const wikiQueries = require("../db/queries.wikis");
 const Authorizer = require("../policies/wiki");
 
 module.exports = {
 
     home(req, res, next) {
+
+        // find all wikis
         wikiQueries.home((err, allWikis) => {
             if (err) {
                 req.flash("error", err.message);
                 res.redirect("/");
             } else {
 
+                // check if the user is signed in
                 const authorized = new Authorizer(req.user, allWikis);
                 const wikis = [];
 
                 if (authorized.newAndCreate()) {
 
+                    // add all wikis that relate to the type of user currently signed in
+                    // is the wiki private || private wiki owned by current user || user an admin
                     allWikis.forEach((wiki) => {
                         if (wiki.private === false || wiki.userId === req.user.id || req.user.role === "admin") {
+                            wiki.title = markdown.toHTML(wiki.title);
                             wikis.push(wiki);
                         };
                     });
 
                 } else {
-
+                    // if user is a guest only show non private wikis
                     allWikis.forEach((wiki) => {
                         if (wiki.private === false) {
+                            wiki.title = markdown.toHTML(wiki.title);
                             wikis.push(wiki);
                         };
                     });
@@ -38,17 +47,24 @@ module.exports = {
 
     show(req, res, next) {
 
-        wikiQueries.show(req.params.id, (err, wiki) => {
-            if (err || !wiki) {
+        // find wiki data with primary key
+        wikiQueries.show(req.params.id, (err, response) => {
+            if (err || !response) {
                 req.flash("error", "Wiki couldn't be found!")
                 res.redirect("/wikis");
             } else {
-
+                
                 const user = req.user || null;
-                const authorized = new Authorizer(user, wiki.wiki);
+                const authorized = new Authorizer(user, response.wiki);
 
+                // check if user is allowed to view this wiki
+                // is the wiki private || private wiki owned by current user || user an admin
                 if (authorized.allowedToView()) {
-                    res.render(`wiki/show_wiki`, {...wiki});
+                    
+                    // transpile markdown into HTML
+                    response.wiki.title = markdown.toHTML(response.wiki.title);
+                    response.wiki.body = markdown.toHTML(response.wiki.body);
+                    res.render(`wiki/show_wiki`, {...response});
                 } else {
                     req.flash("error", "You're not allowed to do that.");
                     res.redirect("/wikis");
@@ -179,4 +195,4 @@ module.exports = {
 
     }
 
-}
+} 

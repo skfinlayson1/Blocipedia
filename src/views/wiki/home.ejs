@@ -22,7 +22,7 @@
             <% if (wikis.length > 0) { %>
                 <% wikis.forEach((wiki) => { %>
                     <div style="background-color:grey">
-                        <h3><%= wiki.title %></h3>
+                        <h3><%- wiki.title %></h3>
                         <a href="/wikis/<%= wiki.id %>">see more...</a> 
                     </div>
 
