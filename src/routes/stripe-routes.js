@@ -5,6 +5,6 @@ const stripeController = require("../controllers/stripe-controller");
 
 router.get("/users/:id/pro", stripeController.proPage);
 router.post("/users/:id/pro/charge", stripeController.charge);
-router.get("/users/:id/makeMember", stripeController.makeMember);
+router.get("/users/:id/makeMember", stripeController.downgradeToMember);
 
 module.exports = router;

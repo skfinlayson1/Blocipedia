@@ -36,7 +36,7 @@ module.exports = {
                 customer: customer.id
             })
             .then((charge) => {
-                userQueries.changeRole(req.params.id, "pro", (err, response) => {
+                userQueries.changeRole(req.params.id, "pro", false, (err, response) => {
                     if (err) {
                         req.flash("error", "Something went wrong!");
                         res.redirect(307, "/");
@@ -55,12 +55,12 @@ module.exports = {
 
     },
 
-    makeMember(req, res, next) {
-        userQueries.changeRole(req.params.id, "member", (err, response) => {
+    downgradeToMember(req, res, next) {
+        userQueries.changeRole(req.params.id, "member", true, (err, response) => {
             if (err) {
                 req.flash("error", "Something went wrong");
                 res.redirect("/");
-            } else {
+            } else { 
                 req.flash("notice", "You are now a member");
                 res.redirect("/");
             }

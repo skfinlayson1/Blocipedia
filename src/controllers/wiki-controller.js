@@ -4,11 +4,33 @@ const Authorizer = require("../policies/wiki");
 module.exports = {
 
     home(req, res, next) {
-        wikiQueries.home((err, wikis) => {
+        wikiQueries.home((err, allWikis) => {
             if (err) {
-                req.flash("error", err);
+                req.flash("error", err.message);
                 res.redirect("/");
             } else {
+
+                const authorized = new Authorizer(req.user, allWikis);
+                const wikis = [];
+
+                if (authorized.newAndCreate()) {
+
+                    allWikis.forEach((wiki) => {
+                        if (wiki.private === false || wiki.userId === req.user.id || req.user.role === "admin") {
+                            wikis.push(wiki);
+                        };
+                    });
+
+                } else {
+
+                    allWikis.forEach((wiki) => {
+                        if (wiki.private === false) {
+                            wikis.push(wiki);
+                        };
+                    });
+
+                }
+
                 res.render("wiki/home", {wikis});
             }
         })
@@ -21,7 +43,17 @@ module.exports = {
                 req.flash("error", "Wiki couldn't be found!")
                 res.redirect("/wikis");
             } else {
-                res.render(`wiki/show_wiki`, {...wiki})
+
+                const user = req.user || null;
+                const authorized = new Authorizer(user, wiki.wiki);
+
+                if (authorized.allowedToView()) {
+                    res.render(`wiki/show_wiki`, {...wiki});
+                } else {
+                    req.flash("error", "You're not allowed to do that.");
+                    res.redirect("/wikis");
+                }
+                
             }
         })
 

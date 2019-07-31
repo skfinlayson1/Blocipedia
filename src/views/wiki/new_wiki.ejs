@@ -31,11 +31,17 @@
                     <small>Enter the content for your wiki</small>
                 </div>
 
-                <div>
-                    <label for="private">Private</label>
-                    <input type="checkbox" name="private">
-                    <small>Make it so only you can see the contents of this post</small>
-                </div>
+                <% if (currentUser) { %>
+                    <% if(currentUser.role === "admin" || currentUser.role === "pro") { %>
+                        <div>
+                            <label for="private">Private</label>
+                            <input type="checkbox" name="private">
+                            <small>Make it so only you can see the contents of this post</small>
+                        </div>
+                    <% } %>
+                <% } %>
+
+
 
                 <button type="submit">Submit</button>
 
