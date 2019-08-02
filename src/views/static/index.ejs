@@ -23,7 +23,7 @@
             
             <% if (currentUser) { %>
                 <a href="/users/<%= currentUser.id %>/admin">Make me an Admin!</a><br> <!--fix this br-->
-                <% if (currentUser.role !== "ro") { %>
+                <% if (currentUser.role === "pro") { %>
                     <a href="/stripe/<%= currentUser.id %>/makeMember">Downgrade from Pro user</a>
                 <% } else { %>
                     <a href="/stripe/<%= currentUser.id %>/pro">Make me a Pro user</a><br>
