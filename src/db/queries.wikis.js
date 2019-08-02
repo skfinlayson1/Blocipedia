@@ -1,10 +1,16 @@
 const Wiki = require("./models").Wiki;
 const User = require("./models").User;
+const Collaborator = require("./models").Collaborator;
 
 module.exports = {
 
-    home(callback) {
-        Wiki.findAll()
+    home(userId, callback) {
+        Wiki.findAll({
+            include: [{
+                model: Collaborator,
+                as: "collaborators"
+            }]
+        })
         .then((res) => {
             callback(null, res);
         })
@@ -12,6 +18,8 @@ module.exports = {
             callback(err);
         })
     },
+
+
 
     create(values, callback) {
         Wiki.create({
@@ -28,23 +36,37 @@ module.exports = {
         })
     },
 
+
+
     show(id, callback) {
 
         const result = {};
 
+        //find the wiki requested
         Wiki.findByPk(id)
         .then((wiki) => {
             result.wiki = wiki;
+
+            //find the user that created the wiki
             User.findByPk(wiki.userId)
             .then((user) => {
                 result.user = user;
-                callback(null, result);
+
+                //find all the collaborators related to the wiki
+                Collaborator.findAll({ where: {wikiId: wiki.id} })
+                .then((collaborators) => {
+                    result.collaborators = collaborators;
+
+                    callback(null, result);
+                })
             })
         })
         .catch((err) => {
             callback(err);
         });
     },
+
+
 
     update(newValues, wikiId, callback) {
         Wiki.findByPk(wikiId)
@@ -63,6 +85,8 @@ module.exports = {
             callback(err);
         })
     },
+
+    
 
     destroy(id, callback) {
         Wiki.destroy({where: {id}})

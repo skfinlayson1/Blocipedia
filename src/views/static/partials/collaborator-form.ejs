@@ -1,0 +1,23 @@
+<% if(currentUser) { %>
+    <% if (currentUser.role === "admin" || (currentUser.role === "pro" && currentUser.id === wiki.userId)) { %>
+
+        <h2>Add a collaborator to your wiki!</h2> 
+
+        <% if(messages.userAdded) { %>
+            <h3><%= messages.userAdded[0] %></h3>
+        <% } %>
+
+        <form action="/collaborators/<%= wiki.id %>/addCollaborator" method="POST">
+
+            <div>
+                <label for="userOrEmail">Enter the username or email of the new collaborator</label><br> <!-- fix this -->
+                <input type="text" name="userOrEmail" placeholder="Username / Email"><br>
+                <small>Please enter the username or email of the user you would like to add as a collaborator</small><br>
+
+                <button type="submit">Add Collaborator</button>
+            </div>
+
+        </form>
+
+    <% } %>
+<% } %>

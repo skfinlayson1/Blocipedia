@@ -5,10 +5,10 @@ const Authorizer = require("../policies/wiki");
 
 module.exports = {
 
-    home(req, res, next) {
+    home(req, res, next) { 
 
         // find all wikis
-        wikiQueries.home((err, allWikis) => {
+        wikiQueries.home(req.user ? req.user.id : 0,(err, allWikis) => {
             if (err) {
                 req.flash("error", err.message);
                 res.redirect("/");
@@ -23,7 +23,14 @@ module.exports = {
                     // add all wikis that relate to the type of user currently signed in
                     // is the wiki private || private wiki owned by current user || user an admin
                     allWikis.forEach((wiki) => {
-                        if (wiki.private === false || wiki.userId === req.user.id || req.user.role === "admin") {
+
+                        let collaborator = false;
+                        if (wiki.collaborators[0] && wiki.collaborators[0].collaboratorId === req.user.id) {
+                            collaborator = true;
+                        };
+
+                        // ADD THIS IF STATEMENT TO THE HELPER!!!!!!
+                        if (wiki.private === false || wiki.userId === req.user.id || req.user.role === "admin" || collaborator) { 
                             wiki.title = markdown.toHTML(wiki.title);
                             wikis.push(wiki);
                         };
@@ -55,11 +62,11 @@ module.exports = {
             } else {
                 
                 const user = req.user || null;
-                const authorized = new Authorizer(user, response.wiki);
+                const authorized = new Authorizer(user, response);
 
                 // check if user is allowed to view this wiki
-                // is the wiki private || private wiki owned by current user || user an admin
-                if (authorized.allowedToView()) {
+                // is the wiki private || private wiki owned by current user || user an admin || user a collaborator
+                if (authorized.allowedToView() || authorized.isCollaborator()) {
                     
                     // transpile markdown into HTML
                     response.wiki.title = markdown.toHTML(response.wiki.title);
@@ -103,9 +110,9 @@ module.exports = {
             wikiQueries.create(values, (err, response) => {
                 if (err) {
                     req.flash("error", err);
-                    res.redirect("/");
+                    res.redirect("/wikis/new");
                 } else {
-                    res.redirect("/") //fix this
+                    res.redirect(`/wikis/${response.id}`)
                 }
             })
         } else {
@@ -137,31 +144,31 @@ module.exports = {
 
     update(req, res, next) {
 
-            const newValues = {
-                title: req.body.title,
-                body: req.body.body,
-                userId: req.user.id,
-                private: req.body.private || false
-            };
+        const newValues = {
+            title: req.body.title,
+            body: req.body.body,
+            userId: req.user.id,
+            private: req.body.private || false
+        };
 
-            wikiQueries.show(req.params.id, (err, wiki) => {
-                if (err || !wiki) {
-                    req.flash('error', "Couldn't find wiki entry.");
-                    res.redirect(`/wikis/${req.params.id}`);
-                } else {
+        wikiQueries.show(req.params.id, (err, wiki) => {
+            if (err || !wiki) {
+                req.flash('error', "Couldn't find wiki entry.");
+                res.redirect(`/wikis/${req.params.id}`);
+            } else {
 
-                    const Authorized = new Authorizer(req.user, wiki);
+                const Authorized = new Authorizer(req.user, wiki);
 
-                    wikiQueries.update(newValues, req.params.id, (err, response) => {
-                        if (err) {
-                            req.flash("error", "Something went wrong");
-                            res.redirect(`/wikis/${req.params.id}/edit`);
-                        } else {
-                            res.redirect(`/wikis/${req.params.id}`);
-                        };
-                    })
-                }
-            })
+                wikiQueries.update(newValues, req.params.id, (err, response) => {
+                    if (err) {
+                        req.flash("error", "Something went wrong");
+                        res.redirect(`/wikis/${req.params.id}/edit`);
+                    } else {
+                        res.redirect(`/wikis/${req.params.id}`);
+                    };
+                })
+            }
+        })
 
       
 

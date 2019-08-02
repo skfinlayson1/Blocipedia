@@ -8,9 +8,23 @@ module.exports = class wiki extends ApplicationPolicies {
 
     allowedToView() {
         if(this.user) {
-            return this.user.role === "admin" || !this.record.private || this.user.id === this.record.userId;
+            return this.user.role === "admin" || !this.record.wiki.private || this.user.id === this.record.wiki.userId;
         } else {
-            return !this.record.private;
+            return !this.record.wiki.private;
+        }
+    }
+    
+    isCollaborator() {
+        if(this.user) {
+            let allowed = false;
+            this.record.collaborators.forEach((collab) => {
+                if (this.user.id === collab.collaboratorId) {
+                    allowed = true;
+                };
+            });
+            return allowed;
+        } else {
+            return false;
         }
     }
 

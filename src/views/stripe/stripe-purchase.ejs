@@ -35,7 +35,7 @@
     });
 
     function handleToken(token) {
-        fetch("/users/<%= currentUser.id %>/pro/charge", {
+        fetch("/stripe/<%= currentUser.id %>/pro/charge", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(token)

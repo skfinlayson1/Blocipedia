@@ -1,7 +1,8 @@
 
 <nav class="navbar">
         <% if (currentUser) { %>
-            <a href="/users/sign_out">Sign Out</a> 
+            <h2 style="display: inline-block; margin: 0px; padding-right: 25px;"><%= currentUser.username %></h2><!-- fix this inline style-->
+            <a href="/users/sign_out">Sign Out</a>
         <% } else { %>
             <a href="/users/sign_up">Sign Up</a>
             <a href="/users/sign_in">Sign In</a> 

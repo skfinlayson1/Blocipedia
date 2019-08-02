@@ -14,24 +14,39 @@
 
 <!--main-->
         <main>
-            <% if (wiki.title) { %>
 
-                <div>
-                    <div><%- wiki.title %></div>
-                    <div><%- wiki.body %></div>
-                    <small>By: <%= user.username %></small>  
-                </div>
+            <div>
 
+                <div><%- wiki.title %></div>
+                <div><%- wiki.body %></div>
+                <p>By: <%= user.username %></p>
+                
+            </div>
+
+            <% if (currentUser && currentUser.id === wiki.userId) { %>
                 <div>
                     <a href="/wikis/<%= wiki.id %>/edit">Edit</a>
                     <a href="/wikis/<%= wiki.id %>/destroy">Delete</a>
                 </div>
-       
-            <% } else { %>
-                <h3>Uhh ohh.... Not sure how that happened! We can't find this wiki...... Anywhere!</h3>
             <% } %>
 
-            </main>
+            <% if (collaborators.length > 0) { %>
+                <div style="background-color:lightgrey">
+                    <p>Collaborators</p>
+
+                    <% collaborators.forEach((collab) => { %>
+                        <small><%= collab.collaboratorUsername %> </small>
+                        <% if (currentUser && currentUser.id === wiki.userId) { %>
+                            <a href="/collaborators/<%= collab.collaboratorId %>/remove">remove</a>
+                        <% } %> 
+                        <br> <!--fix this br-->
+                    <% }) %>
+                </div>
+            <% } %>
+
+            <% include ../static/partials/collaborator-form %>
+
+        </main>
 
 <!--footer-->
         <footer>

@@ -11,6 +11,7 @@ module.exports = {
         app.use(passport.session());
         
         passport.use(new LocalStratagy((username, password, done) => {
+
             User.findOne({where: {username: username}})
             .then((user) => {
                 if(!user) {return done(null, false, {message: "Incorrect username."})};
